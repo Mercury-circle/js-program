@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const timeoutPromise = (call, delay = 5000) => {
+        let wait = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject("请求超时");
+          }, delay);
+        });
+        return Promise.race([call(), wait]);
+      };
+      const t1 = () =>
+        new Promise((resolve, reject) => {
+          setTimeout(resolve, 2000);
+        });
+
+      const t2 = () =>
+        new Promise((resolve, reject) => {
+          setTimeout(resolve, 6000);
+        });
+
+      timeoutPromise(t1)
+        .then((res) => {
+          console.log("t1 resolve");
+        })
+        .catch((err) => {
+          console.log("t1 timeout");
+        });
+      timeoutPromise(t2)
+        .then((res) => {
+          console.log("t2 resolve");
+        })
+        .catch((err) => {
+          console.log("t2 timeout", err);
+        });
+    </script>
+  </body>
+</html>
