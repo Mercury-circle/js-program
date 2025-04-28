@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class EventEmitter {
+        constructor() {
+          this.events = {};
+        }
+        //订阅
+        on(eventName, callback) {
+          if (!this.events[eventName]) {
+            this.events[eventName] = [callback];
+          } else {
+            this.events[eventName].push(callback);
+          }
+        }
+        //取消订阅
+        off(eventName, callback) {
+          if (this.events[eventName]) {
+            this.events[eventName] = this.events[eventName].filter(
+              (fn) => fn !== callback
+            );
+          }
+        }
+        //发布
+        emit(eventName, ...args) {
+          if (this.events[eventName]) {
+            this.events[eventName].forEach((callback) => callback(...args));
+          }
+        }
+      }
+      const event = new EventEmitter();
+
+      function greet(name) {
+        console.log(`Hello, ${name}!`);
+      }
+
+      event.on("greet", greet);
+
+      event.emit("greet", "Alice"); // 输出: Hello, Alice!
+    </script>
+  </body>
+</html>

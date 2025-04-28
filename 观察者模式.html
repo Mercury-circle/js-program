@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Observerd {
+        constructor(name) {
+          this.name = name;
+          this.state = "吃饭";
+          //我要知道都谁在观察我
+          this.observerList = [];
+        }
+        setObserver(observer) {
+          //添加每一个观察我的人
+          this.observerList.push(observer);
+        }
+        setState(state) {
+          //我会更新我的状态
+          if (state != undefined) {
+            this.state = state;
+          }
+          //所有观察者都会知道我更新了状态
+          this.observerList.forEach((observer) => observer.update(this));
+        }
+      }
+
+      class Observer {
+        constructor(doSome) {
+          this.doSome = doSome;
+        }
+        update(observerd) {
+          console.log(observerd.name + "正在" + observerd.state);
+        }
+      }
+
+      let ob1 = new Observer("我是观察者1");
+      let ob2 = new Observer("我是观察者2");
+      let me = new Observerd("小美");
+      me.setObserver(ob1);
+      me.setObserver(ob2);
+      me.setState();
+      me.setState("睡觉");
+    </script>
+  </body>
+</html>
